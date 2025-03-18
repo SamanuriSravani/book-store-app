@@ -1,12 +1,15 @@
-
 const express = require('express');
-const { getTodos, createTodo, deleteTodo, updateTodo } = require('../controllers/todoController');
-
 const router = express.Router();
+const Todo = require('../models/Todo'); // Ensure the model file exists
 
-router.get('/', getTodos);
-router.post('/', createTodo);
-router.put('/:id', updateTodo); // New PUT route
-router.delete('/:id', deleteTodo);
+// Get all Todos
+router.get('/', async (req, res) => {
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching todos' });
+  }
+});
 
 module.exports = router;
